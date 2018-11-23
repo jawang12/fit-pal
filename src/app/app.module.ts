@@ -3,6 +3,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { MaterialModule } from './material.module';
 import { CoreModule } from './core/core.module';
+import { FlexLayoutModule} from '@angular/flex-layout';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { SignupComponent } from './auth/signup/signup.component';
@@ -25,7 +27,10 @@ import { PastTrainingComponent } from './training/past-training/past-training.co
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
+    ReactiveFormsModule,
+    FormsModule,
     MaterialModule,
+    FlexLayoutModule,
     CoreModule
   ],
   providers: [],
