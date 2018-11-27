@@ -2,18 +2,16 @@ import { Routes, RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 
 import { TrainingComponent } from './training.component';
-import { NewTrainingComponent } from './new-training/new-training.component';
-import { PastTrainingComponent } from './past-training/past-training.component';
 import { CurrentTrainingComponent } from './current-training/current-training.component';
 
 const trainingRoutes: Routes = [
   {
-    path: '',
+    path: 'training',
     component: TrainingComponent,
     children: [
       {
         path: 'new',
-        component: NewTrainingComponent
+        loadChildren: './new-training/lazy.module#NewTrainingLazyModule'
       },
       {
         path: 'current',
@@ -21,7 +19,7 @@ const trainingRoutes: Routes = [
       },
       {
         path: 'past',
-        component: PastTrainingComponent
+        loadChildren: './past-training/lazy.module#PastTrainingLazyModule'
       }
     ]
   }

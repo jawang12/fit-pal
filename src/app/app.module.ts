@@ -5,6 +5,7 @@ import { MaterialModule } from './material.module';
 import { CoreModule } from './core/core.module';
 import { FlexLayoutModule} from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { TrainingModule } from './training/training.module';
 
 import { AppComponent } from './app.component';
 import { SignupComponent } from './auth/signup/signup.component';
@@ -27,6 +28,7 @@ import { SideNavListComponent } from './navigation/side-nav-list/side-nav-list.c
     FormsModule,
     MaterialModule,
     FlexLayoutModule,
+    TrainingModule,
     CoreModule
   ],
   providers: [],
