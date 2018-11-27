@@ -21,7 +21,12 @@ const appRoutes: Routes = [
   },
   {
     path: 'training',
-    component: TrainingComponent
+    // since we are lazy loading this module, we do not have to add TrainingModule to any imports
+    loadChildren: './training/training.module#TrainingModule'
+  },
+  {
+    path: '**',
+    component: HomeComponent
   }
 ];
 

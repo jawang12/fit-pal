@@ -1,0 +1,21 @@
+a {
+  text-decoration: none;
+  color: white;
+}
+
+a:hover {
+  color: lightgrey;
+}
+
+.nav-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.active-link,
+.active-link:active,
+.active-link:focus {
+  color: lightgrey;
+}
+

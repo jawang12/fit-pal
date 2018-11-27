@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AppRoutingModule } from '../app-routing.module';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { HomeComponent } from './home/home.component';
 
@@ -8,7 +9,8 @@ import { HomeComponent } from './home/home.component';
   declarations: [HomeComponent],
   imports: [
     CommonModule,
-    AppRoutingModule
+    AppRoutingModule,
+    FlexLayoutModule
   ],
   exports: [
     AppRoutingModule
