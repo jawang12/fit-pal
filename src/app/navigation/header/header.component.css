@@ -5,6 +5,7 @@ a {
 
 a:hover {
   color: lightgrey;
+  cursor: pointer;
 }
 
 .nav-list {

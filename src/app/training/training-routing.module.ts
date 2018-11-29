@@ -3,11 +3,13 @@ import { NgModule } from '@angular/core';
 
 import { TrainingComponent } from './training.component';
 import { CurrentTrainingComponent } from './current-training/current-training.component';
+import { AuthGuard } from '../auth/auth.guard';
 
 const trainingRoutes: Routes = [
   {
     path: 'training',
     component: TrainingComponent,
+    canActivate: [AuthGuard],
     children: [
       {
         path: 'new',
@@ -27,7 +29,8 @@ const trainingRoutes: Routes = [
 
 @NgModule({
   imports: [RouterModule.forChild(trainingRoutes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
+  providers: [AuthGuard]
 })
 
 export class TrainingRoutingModule {
