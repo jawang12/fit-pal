@@ -1,4 +1,4 @@
-<nav mat-tab-nav-bar>
+<nav mat-tab-nav-bar *ngIf="currentTrainingActive()">
   <a mat-tab-link
     routerLink="/training/new"
     routerLinkActive #active2="routerLinkActive"
