@@ -1,11 +1,13 @@
 <nav mat-tab-nav-bar *ngIf="currentTrainingActive()">
   <a mat-tab-link
     routerLink="/training/new"
-    routerLinkActive #active2="routerLinkActive"
+    routerLinkActive
+    #active2="routerLinkActive"
     [active]="active2.isActive">New Exercises</a>
   <a mat-tab-link
     [routerLink]="['/training/past']"
-    routerLinkActive #active1="routerLinkActive"
+    routerLinkActive
+    #active1="routerLinkActive"
     [active]="active1.isActive">Past Exercises</a>
 </nav>
 

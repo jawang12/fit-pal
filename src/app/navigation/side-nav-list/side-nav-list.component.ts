@@ -26,14 +26,12 @@ export class SideNavListComponent implements OnInit, OnDestroy {
     this.checkLoginStatus.unsubscribe();
   }
 
-  logout() {
+  onLogout() {
+    this.onClose();
     this.authService.logout();
   }
 
-  onClose(logout?: string) {
+  onClose() {
     this.clickClose.emit();
-    if (logout) {
-      this.logout();
-    }
   }
 }

@@ -1,21 +1,37 @@
 <mat-nav-list>
   <ng-template [ngIf]="!loggedIn">
-    <a routerLink="/signup" mat-list-item (click)="onClose()">
+    <a routerLink="/signup"
+       mat-list-item
+       (click)="onClose()"
+       routerLinkActive
+       #rlaInstance1="routerLinkActive"
+       [attr.tabindex]="rlaInstance1.isActive ? 0 : -1"
+       [class.active-link]="rlaInstance1.isActive">
       <mat-icon>account_circle</mat-icon>
       <span class="nav-list-name">Signup</span>
     </a>
-    <a routerLink="/login" mat-list-item (click)="onClose()">
+    <a routerLink="/login"
+       mat-list-item (click)="onClose()"
+       routerLinkActive
+       #rlaInstance2="routerLinkActive"
+       [attr.tabindex]="rlaInstance2.isActive ? 0 : -1"
+       [class.active-link]="rlaInstance2.isActive">
       <mat-icon>person</mat-icon>
       <span class="nav-list-name">Login</span>
     </a>
   </ng-template>
   <ng-template [ngIf]="loggedIn">
-    <a routerLink="/training" mat-list-item (click)="onClose()">
+    <a routerLink="/training"
+       mat-list-item (click)="onClose()"
+       routerLinkActive
+       #rlaInstance3="routerLinkActive"
+       [attr.tabindex]="rlaInstance3.isActive ? 0 : -1"
+       [class.active-link]="rlaInstance3.isActive">
       <mat-icon>directions_run</mat-icon>
       <span class="nav-list-name">Training</span>
     </a>
     <mat-list-item>
-      <button mat-icon-button (click)="onClose('logout')">
+      <button mat-icon-button (click)="onLogout()">
         <mat-icon>local_hotel</mat-icon>
         <span class="nav-list-name">Logout</span>
       </button>

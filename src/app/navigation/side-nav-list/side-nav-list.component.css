@@ -3,11 +3,13 @@ a {
   color: white;
 }
 
-a:hover {
-  color: lightgrey;
-}
-
 .nav-list-name {
   display: inline-block;
   padding-left: 8px;
+}
+
+.active-link {
+  font-weight: bold;
+  color: dodgerblue;
+  background: rgba(0, 0, 0, 0.12);
 }

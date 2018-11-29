@@ -15,7 +15,7 @@
       </ng-template>
       <ng-template [ngIf]="loggedIn">
         <li><a routerLink="/training" routerLinkActive="active-link">Training</a></li>
-        <li><a routerLink="/" (click)="logout()">Logout</a></li>
+        <li><a style="{cursor: pointer;}" (click)="logout()">Logout</a></li>
       </ng-template>
     </ul>
   </div>
