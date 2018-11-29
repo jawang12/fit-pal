@@ -12,6 +12,7 @@ export class CurrentTrainingComponent implements OnInit {
 
   progress = 0;
   timer;
+  message = `Give it all you've got. Strive for greatness!`;
 
   constructor(private dialog: MatDialog, private router: Router) { }
 
@@ -22,6 +23,9 @@ export class CurrentTrainingComponent implements OnInit {
   startOrResumeTimer() {
     this.timer = setInterval(() => {
       this.progress += 5;
+      if (this.progress === 50) {
+        this.message = 'Almost there, keep pushing!';
+      }
       if (this.progress === 100) {
         clearInterval(this.timer);
       }

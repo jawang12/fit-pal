@@ -1,4 +1,6 @@
-import { Component, Output, EventEmitter } from '@angular/core';
+import { Component, Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { AuthService } from '../../auth/auth.service';
 
 @Component({
   selector: 'app-side-nav-list',
@@ -6,10 +8,32 @@ import { Component, Output, EventEmitter } from '@angular/core';
   styleUrls: ['./side-nav-list.component.css']
 })
 
-export class SideNavListComponent {
+export class SideNavListComponent implements OnInit, OnDestroy {
   @Output() clickClose: EventEmitter<void> = new EventEmitter<void>();
 
-  onClose() {
+  loggedIn = false;
+  checkLoginStatus: Subscription;
+
+  constructor(private authService: AuthService) {}
+
+  ngOnInit() {
+    this.checkLoginStatus = this.authService.loginStatus.subscribe((status: boolean) => {
+      this.loggedIn = status;
+    });
+  }
+
+  ngOnDestroy() {
+    this.checkLoginStatus.unsubscribe();
+  }
+
+  logout() {
+    this.authService.logout();
+  }
+
+  onClose(logout?: string) {
     this.clickClose.emit();
+    if (logout) {
+      this.logout();
+    }
   }
 }

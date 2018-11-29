@@ -1,20 +1,24 @@
 <mat-nav-list>
-  <a routerLink="/signup" mat-list-item (click)="onClose()">
-    <mat-icon>account_circle</mat-icon>
-    <span class="nav-list-name">Signup</span>
-  </a>
-  <a routerLink="/login" mat-list-item (click)="onClose()">
-    <mat-icon>person</mat-icon>
-    <span class="nav-list-name">Login</span>
-  </a>
-  <a routerLink="/training" mat-list-item (click)="onClose()">
-    <mat-icon>directions_run</mat-icon>
-    <span class="nav-list-name">Training</span>
-  </a>
-  <mat-list-item>
-    <button mat-icon-button (click)="onClose()">
-      <mat-icon>local_hotel</mat-icon>
-      <span class="nav-list-name">Logout</span>
-    </button>
-  </mat-list-item>
+  <ng-template [ngIf]="!loggedIn">
+    <a routerLink="/signup" mat-list-item (click)="onClose()">
+      <mat-icon>account_circle</mat-icon>
+      <span class="nav-list-name">Signup</span>
+    </a>
+    <a routerLink="/login" mat-list-item (click)="onClose()">
+      <mat-icon>person</mat-icon>
+      <span class="nav-list-name">Login</span>
+    </a>
+  </ng-template>
+  <ng-template [ngIf]="loggedIn">
+    <a routerLink="/training" mat-list-item (click)="onClose()">
+      <mat-icon>directions_run</mat-icon>
+      <span class="nav-list-name">Training</span>
+    </a>
+    <mat-list-item>
+      <button mat-icon-button (click)="onClose('logout')">
+        <mat-icon>local_hotel</mat-icon>
+        <span class="nav-list-name">Logout</span>
+      </button>
+    </mat-list-item>
+  </ng-template>
 </mat-nav-list>

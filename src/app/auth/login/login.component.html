@@ -6,8 +6,8 @@
     [formGroup]="reactiveLogin"
     (ngSubmit)="onSubmit()">
     <mat-form-field>
-      <input type="email" matInput placeholder="Email Address" formControlName="username">
-      <mat-error *ngIf="reactiveLogin.controls.username.invalid">{{ errorMessage() }}</mat-error>
+      <input type="email" matInput placeholder="Email Address" formControlName="email">
+      <mat-error *ngIf="reactiveLogin.controls.email.invalid">{{ errorMessage() }}</mat-error>
     </mat-form-field>
     <mat-form-field>
       <input type="password" matInput placeholder="Password" formControlName="password">

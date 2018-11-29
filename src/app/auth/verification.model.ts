@@ -1,4 +1,3 @@
-export interface Verification {
-  email: string;
-  password: string;
+export class Verification {
+  constructor(public email: string, public password: string) {}
 }

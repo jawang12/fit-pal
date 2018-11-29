@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 
+import { AuthService } from '../auth.service';
+import { Verification } from '../verification.model';
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -9,7 +12,7 @@ import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 export class LoginComponent implements OnInit {
   reactiveLogin: FormGroup;
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder, private authService: AuthService) {}
 
   ngOnInit() {
     this.initForm();
@@ -17,18 +20,19 @@ export class LoginComponent implements OnInit {
 
   private initForm() {
     this.reactiveLogin = this.fb.group({
-      'username': ['', [Validators.required, Validators.email]],
+      'email': ['', [Validators.required, Validators.email]],
       'password': ['', Validators.required]
     });
   }
 
   errorMessage() {
-    return this.reactiveLogin.get('username').hasError('required') ? 'Please enter a email address' :
-    this.reactiveLogin.get('username').hasError('email') ? 'The email you entered is invalid' : '';
+    return this.reactiveLogin.get('email').hasError('required') ? 'Please enter a email address' :
+    this.reactiveLogin.get('email').hasError('email') ? 'The email you entered is invalid' : '';
   }
 
   onSubmit() {
-    console.log(this.reactiveLogin);
+    const { email, password } = this.reactiveLogin.value;
+    this.authService.login(new Verification(email, password));
   }
 
 }
