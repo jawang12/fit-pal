@@ -10,8 +10,8 @@ export class TrainingComponent {
 
   constructor(private router: Router) { }
 
-  currentTrainingActive() {
-    return this.router.routerState.snapshot.url !== '/training/current';
+  trainingInProgress() {
+    return this.router.routerState.snapshot.url !== '/training';
   }
 
 }
