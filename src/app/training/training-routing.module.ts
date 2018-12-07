@@ -9,7 +9,7 @@ const trainingRoutes: Routes = [
   {
     path: 'training',
     component: TrainingComponent,
-    canActivate: [AuthGuard],
+    // canActivate: [AuthGuard],
     children: [
       {
         path: 'new',

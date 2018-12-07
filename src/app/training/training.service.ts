@@ -20,12 +20,16 @@ export class TrainingService {
 
   constructor(private router: Router) {}
 
+  startExercise(id: string) {
+    this.exerciseInProgress = this.exercises.find(exercise => exercise.id === id);
+  }
+
   getExercises() {
     return [ ...this.exercises ];
   }
 
-  startExercise(id: string) {
-    this.exerciseInProgress = this.exercises.find(exercise => exercise.id === id);
+  getRecordedExercises() {
+    return this.recordedExercises.slice();
   }
 
   getCurrentExercise() {
@@ -39,9 +43,9 @@ export class TrainingService {
   }
 
   cancelExercise(progress: number) {
-    const { id, name, duration } = this.exerciseInProgress;
+    const { id, name, duration, calories } = this.exerciseInProgress;
     this.recordedExercises.push(
-      new Exercise(id, name, duration * (progress / 100), duration * (progress / 100), new Date(), 'cancelled')
+      new Exercise(id, name, +(duration * (progress / 100)).toFixed(2), Number((calories * (progress / 100)).toFixed(2)), new Date(), 'cancelled')
     );
     this.router.navigate(['/training/new']);
   }
