@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatSelect } from '@angular/material/select';
+import { Observable } from 'rxjs';
 
 import { TrainingService } from '../training.service';
 import { Exercise } from '../exercise.model';
@@ -12,12 +13,10 @@ import { Exercise } from '../exercise.model';
 })
 export class NewTrainingComponent implements OnInit {
 
-  exercises: Exercise[];
-
-  constructor(private router: Router, private trainingService: TrainingService) { }
+  constructor(private router: Router, protected trainingService: TrainingService) { }
 
   ngOnInit() {
-    this.exercises = this.trainingService.getExercises();
+    this.trainingService.fetchAllExercises();
   }
 
   startTraining(selected: MatSelect) {

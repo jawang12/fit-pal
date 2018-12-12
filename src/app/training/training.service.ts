@@ -1,5 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { AngularFirestore } from '@angular/fire/firestore';
+import { Subject } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { Exercise } from './exercise.model';
 
@@ -8,28 +11,39 @@ import { Exercise } from './exercise.model';
 })
 
 export class TrainingService {
-  private exercises: Exercise[] = [
-    new Exercise('push-ups', 'Push Ups', 30, 10),
-    new Exercise('burpees', 'Burpees', 120, 25),
-    new Exercise('crunches', 'Crunches', 60, 10),
-    new Exercise('squats', 'Squats', 30, 7)
-  ];
-
+  private exercises: Exercise[];
   private exerciseInProgress: Exercise;
-  private recordedExercises: Exercise[] = [];
+  private recordedExercises: Exercise[];
+  exercisesChanges = new Subject<Exercise[]>();
+  recordedExercisesChanges = new Subject<Exercise[]>();
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private afs: AngularFirestore) {}
 
   startExercise(id: string) {
     this.exerciseInProgress = this.exercises.find(exercise => exercise.id === id);
   }
 
-  getExercises() {
-    return [ ...this.exercises ];
+  fetchAllExercises() {
+    // this subscription is managed automatically
+    this.afs.collection('exercises').snapshotChanges()
+    .pipe(map(docArray => {
+      return docArray.map(obj => {
+        const id = obj.payload.doc.id;
+        const exerciseDetail = obj.payload.doc.data();
+        return new Exercise(id, exerciseDetail['name'], exerciseDetail['duration'], exerciseDetail['calories']);
+      });
+    })
+    ).subscribe((pipedDocArray: Exercise[]) => {
+      this.exercises = pipedDocArray;
+      this.exercisesChanges.next(this.exercises.slice()); // pass a copy so that original array remains immutable
+    });
   }
 
-  getRecordedExercises() {
-    return this.recordedExercises.slice();
+  fetchRecordedExercises() {
+    this.afs.collection('recordedExercises').valueChanges().subscribe((recordedExercises: Exercise[]) => {
+      this.recordedExercises = recordedExercises;
+      this.recordedExercisesChanges.next(this.recordedExercises.slice());
+    });
   }
 
   getCurrentExercise() {
@@ -38,15 +52,32 @@ export class TrainingService {
 
   completeExercise() {
     const { id, name, duration, calories } = this.exerciseInProgress;
-    this.recordedExercises.push(new Exercise(id, name, duration, calories, new Date(), 'completed'));
+    this.dbAddRecordedExercise({
+      id,
+      name,
+      duration,
+      calories,
+      date: new Date(),
+      state: 'completed'
+    });
     this.router.navigate(['/training/new']);
   }
 
   cancelExercise(progress: number) {
     const { id, name, duration, calories } = this.exerciseInProgress;
-    this.recordedExercises.push(
-      new Exercise(id, name, +(duration * (progress / 100)).toFixed(2), Number((calories * (progress / 100)).toFixed(2)), new Date(), 'cancelled')
-    );
+    this.dbAddRecordedExercise({
+      id,
+      name,
+      duration: +(duration * (progress / 100)).toFixed(2),
+      calories: Number((calories * (progress / 100)).toFixed(2)),
+      date: new Date(),
+      state: 'cancelled'
+    });
     this.router.navigate(['/training/new']);
+  }
+
+  dbAddRecordedExercise(exercise: Exercise) {
+    this.afs.collection('recordedExercises').doc('example').set(exercise)
+    .catch(error => console.error(error, 'error adding to the database'));
   }
 }

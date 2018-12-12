@@ -1,7 +1,9 @@
-import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
 import { MatTableDataSource } from '@angular/material';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
+import { Subscription } from 'rxjs';
+
 import { Exercise } from '../exercise.model';
 import { TrainingService } from '../training.service';
 
@@ -11,23 +13,31 @@ import { TrainingService } from '../training.service';
   styleUrls: ['./past-training.component.css']
 })
 
-export class PastTrainingComponent implements OnInit, AfterViewInit {
+export class PastTrainingComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   displayedColumns = ['date', 'name', 'duration', 'calories', 'state'];
   dataSource = new MatTableDataSource<Exercise>(); // value is the element inside the array; array is assumed
   totalExercises: number;
+  recordedExercisesSubscription: Subscription;
 
   constructor(private trainingService: TrainingService) {}
 
   ngOnInit() {
-    this.dataSource.data = this.trainingService.getRecordedExercises();
-    this.totalExercises = this.trainingService.getRecordedExercises().length;
+    this.recordedExercisesSubscription = this.trainingService.recordedExercisesChanges.subscribe((recordedExercises: Exercise[]) => {
+      this.dataSource.data = recordedExercises;
+      this.totalExercises = recordedExercises.length;
+    });
+    this.trainingService.fetchRecordedExercises();
   }
 
   ngAfterViewInit() {
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
+  }
+
+  ngOnDestroy() {
+    this.recordedExercisesSubscription.unsubscribe();
   }
 
   onFilter(value: string) {

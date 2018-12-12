@@ -3,8 +3,18 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  firebase: {
+    apiKey: 'AIzaSyBP5Cw0R3CrLqsLENPfWe93aYK4xn87tIs',
+    authDomain: 'ng-fitpal.firebaseapp.com',
+    databaseURL: 'https://ng-fitpal.firebaseio.com',
+    projectId: 'ng-fitpal',
+    storageBucket: 'ng-fitpal.appspot.com',
+    messagingSenderId: '252543282113'
+  }
 };
+
+
 
 /*
  * In development mode, to ignore zone related error stack frames such as
