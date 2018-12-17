@@ -1,47 +1,95 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { Router } from '@angular/router';
+import { AngularFireAuth } from '@angular/fire/auth';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { User } from './user.model';
 import { Verification } from './verification.model';
+import { TrainingService } from '../training/training.service';
+import { UiService } from '../shared/ui.service';
 
 @Injectable({
   providedIn: 'root'
 })
 
 export class AuthService {
-  private user: User;
+  private isAuthenticated = false;
   loginStatus: Subject<boolean> = new Subject<boolean>();
 
-  constructor(private router: Router) {}
+  constructor(private router: Router,
+              private afAuth: AngularFireAuth,
+              private trainingService: TrainingService,
+              private uiService: UiService,
+              private snackbar: MatSnackBar) {}
+
+  // listens to changes in the authentication status; emits event whenever the auth state changes
+  authListener() {
+    this.afAuth.authState.subscribe(user => {
+      if (user) {
+        this.afAuth.auth.setPersistence('session')
+        .then(() => {
+          this.isAuthenticated = true;
+          this.loginStatus.next(true);
+        })
+        .catch(error => console.error(error));
+      } else {
+        this.trainingService.unsubAll();
+        this.isAuthenticated = false;
+        this.loginStatus.next(false);
+      }
+    });
+  }
 
   registerUser(creds: Verification) {
-    this.user = new User(creds.email, Math.round(Math.random() * 10000).toString());
-    this.loginStatus.next(true);
-
-    this.router.navigate(['/training']);
+    this.uiService.loadingStateStatus.next(true);
+    this.afAuth.auth.createUserWithEmailAndPassword(creds.email, creds.password)
+    .then(result => {
+      console.log('user has been created', result);
+      this.uiService.loadingStateStatus.next(false);
+      this.router.navigate(['/training']);
+    })
+    .catch((error: Error) => {
+      console.error(error);
+      this.uiService.loadingStateStatus.next(false);
+      this.snackbar.open(error.message, null, {
+        duration: 5000
+      });
+    });
   }
 
   login(creds: Verification) {
-    this.user = new User(creds.email, Math.round(Math.random() * 10000).toString());
-    this.loginStatus.next(true);
-
-    this.router.navigate(['/training']);
-  }
-
-  getUser() {
-    const { email, userId } = this.user;
-    return new User(email, userId); // returns new user object since objects are pass by ref;
+    this.uiService.loadingStateStatus.next(true);
+    this.afAuth.auth.signInWithEmailAndPassword(creds.email, creds.password)
+    .then(result => {
+      console.log('user has successfully signed in', result);
+      this.uiService.loadingStateStatus.next(false);
+      this.router.navigate(['/training']);
+    })
+    .catch((error: Error) => {
+      console.error('error signing in', error);
+      this.uiService.loadingStateStatus.next(false);
+      this.snackbar.open(error.message, null, {
+        duration: 5000
+      });
+    });
   }
 
   logout() {
-    this.user = null;
-    this.loginStatus.next(false);
-
-    this.router.navigate(['/']);
+    this.afAuth.auth.signOut()
+    .then(result => {
+      console.log('signed out', result);
+      this.router.navigate(['/']);
+    })
+    .catch((error: Error) => {
+      console.error(error, 'error on signout');
+      this.snackbar.open(error.message, null, {
+        duration: 5000
+      });
+    });
   }
 
-  isAuthenticated() {
-    return Boolean(this.user); // this.user !== null
+  authStatus() {
+    return this.isAuthenticated;
   }
 }

@@ -10,6 +10,8 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatListModule } from '@angular/material/list';
 import { MatSelectModule } from '@angular/material/select';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
   imports: [
@@ -23,7 +25,9 @@ import { MatSelectModule } from '@angular/material/select';
     MatSidenavModule,
     MatListModule,
     MatToolbarModule,
-    MatSelectModule
+    MatSelectModule,
+    MatSnackBarModule,
+    MatProgressSpinnerModule
   ],
   exports: [
     MatButtonModule,
@@ -36,7 +40,9 @@ import { MatSelectModule } from '@angular/material/select';
     MatSidenavModule,
     MatListModule,
     MatToolbarModule,
-    MatSelectModule
+    MatSelectModule,
+    MatSnackBarModule,
+    MatProgressSpinnerModule
   ]
 })
 

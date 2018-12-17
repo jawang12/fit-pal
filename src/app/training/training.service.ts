@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { Subject } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 
+import { UiService } from '../shared/ui.service';
 import { Exercise } from './exercise.model';
 
 @Injectable({
@@ -16,8 +17,9 @@ export class TrainingService {
   private recordedExercises: Exercise[];
   exercisesChanges = new Subject<Exercise[]>();
   recordedExercisesChanges = new Subject<Exercise[]>();
+  activeSubs: Subscription[] = [];
 
-  constructor(private router: Router, private afs: AngularFirestore) {}
+  constructor(private router: Router, private afs: AngularFirestore, private uiService: UiService) {}
 
   startExercise(id: string) {
     this.exerciseInProgress = this.exercises.find(exercise => exercise.id === id);
@@ -25,7 +27,8 @@ export class TrainingService {
 
   fetchAllExercises() {
     // this subscription is managed automatically
-    this.afs.collection('exercises').snapshotChanges()
+    this.uiService.loadingStateStatus.next(true);
+    this.activeSubs.push(this.afs.collection('exercises').snapshotChanges()
     .pipe(map(docArray => {
       return docArray.map(obj => {
         const id = obj.payload.doc.id;
@@ -36,14 +39,18 @@ export class TrainingService {
     ).subscribe((pipedDocArray: Exercise[]) => {
       this.exercises = pipedDocArray;
       this.exercisesChanges.next(this.exercises.slice()); // pass a copy so that original array remains immutable
-    });
+      this.uiService.loadingStateStatus.next(false);
+    }, (error) => {
+      console.log(error, 'error fetching exercises');
+    }));
   }
 
   fetchRecordedExercises() {
-    this.afs.collection('recordedExercises').valueChanges().subscribe((recordedExercises: Exercise[]) => {
+    this.activeSubs.push(this.afs.collection('recordedExercises').valueChanges()
+    .subscribe((recordedExercises: Exercise[]) => {
       this.recordedExercises = recordedExercises;
       this.recordedExercisesChanges.next(this.recordedExercises.slice());
-    });
+    }));
   }
 
   getCurrentExercise() {
@@ -79,5 +86,12 @@ export class TrainingService {
   dbAddRecordedExercise(exercise: Exercise) {
     this.afs.collection('recordedExercises').doc('example').set(exercise)
     .catch(error => console.error(error, 'error adding to the database'));
+  }
+
+  unsubAll() {
+    this.activeSubs.forEach(sub => {
+      sub.unsubscribe();
+    });
+    this.activeSubs = [];
   }
 }
