@@ -11,7 +11,8 @@
       <span class="nav-list-name">Signup</span>
     </a>
     <a routerLink="/login"
-       mat-list-item (click)="onClose()"
+       mat-list-item
+       (click)="onClose()"
        routerLinkActive
        #rlaInstance2="routerLinkActive"
        [attr.tabindex]="rlaInstance2.isActive ? 0 : -1"
@@ -22,7 +23,8 @@
   </ng-template>
   <ng-template [ngIf]="loggedIn">
     <a routerLink="/training"
-       mat-list-item (click)="onClose()"
+       mat-list-item
+       (click)="onClose()"
        routerLinkActive
        #rlaInstance3="routerLinkActive"
        [attr.tabindex]="rlaInstance3.isActive ? 0 : -1"

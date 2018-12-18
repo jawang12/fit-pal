@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { Router } from '@angular/router';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { User } from './user.model';
 import { Verification } from './verification.model';
@@ -20,8 +19,7 @@ export class AuthService {
   constructor(private router: Router,
               private afAuth: AngularFireAuth,
               private trainingService: TrainingService,
-              private uiService: UiService,
-              private snackbar: MatSnackBar) {}
+              private uiService: UiService) {}
 
   // listens to changes in the authentication status; emits event whenever the auth state changes
   authListener() {
@@ -52,9 +50,7 @@ export class AuthService {
     .catch((error: Error) => {
       console.error(error);
       this.uiService.loadingStateStatus.next(false);
-      this.snackbar.open(error.message, null, {
-        duration: 5000
-      });
+      this.uiService.openSnackBar(error.message, null, 5000);
     });
   }
 
@@ -69,9 +65,7 @@ export class AuthService {
     .catch((error: Error) => {
       console.error('error signing in', error);
       this.uiService.loadingStateStatus.next(false);
-      this.snackbar.open(error.message, null, {
-        duration: 5000
-      });
+      this.uiService.openSnackBar(error.message, null, 5000);
     });
   }
 
@@ -83,9 +77,7 @@ export class AuthService {
     })
     .catch((error: Error) => {
       console.error(error, 'error on signout');
-      this.snackbar.open(error.message, null, {
-        duration: 5000
-      });
+      this.uiService.openSnackBar(error.message, null, 5000);
     });
   }
 

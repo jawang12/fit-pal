@@ -1,7 +1,7 @@
 <section class="new-training" fxLayout fxLayoutAlign="center">
   <mat-card fxFlex.lt-sm="100%" fxFlex="400px">
     <mat-card-title fxLayoutAlign="center">Lets Workout!</mat-card-title>
-    <ng-template [ngIf]="!(uiService.loadingStateStatus | async)">
+    <ng-template [ngIf]="!(uiService.loadingStateStatus | async) && exercises">
       <mat-card-content>
         <mat-form-field fxLayoutAlign="center">
           <mat-select placeholder="Select a workout" #selected>
@@ -17,6 +17,11 @@
         </button>
       </mat-card-actions>
     </ng-template>
+    <mat-card-actions *ngIf="!(uiService.loadingStateStatus | async) && !exercises" fxLayoutAlign="center">
+      <button type="button" mat-raised-button (click)="trainingService.fetchAllExercises()">
+        Fetch Again
+      </button>
+    </mat-card-actions>
     <mat-card-content *ngIf="uiService.loadingStateStatus | async" fxLayoutAlign="center">
       <mat-spinner [diameter]="40"></mat-spinner>
     </mat-card-content>

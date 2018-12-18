@@ -1,11 +1,7 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { SharedModule } from '../shared/shared.module';
 import { TrainingRoutingModule } from './training-routing.module';
-import { MatTabsModule } from '@angular/material/tabs';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { FlexLayoutModule } from '@angular/flex-layout';
-import { MatButtonModule } from '@angular/material/button';
-import { MatDialogModule } from '@angular/material/dialog';
+import { AngularFirestoreModule } from '@angular/fire/firestore';
 
 import { TrainingComponent } from './training.component';
 import { CurrentTrainingComponent } from './current-training/current-training.component';
@@ -18,13 +14,9 @@ import { StopTrainingModalComponent } from './current-training/stop-training-mod
     StopTrainingModalComponent
   ],
   imports: [
-    CommonModule,
-    MatTabsModule,
-    MatProgressSpinnerModule,
-    TrainingRoutingModule,
-    FlexLayoutModule,
-    MatButtonModule,
-    MatDialogModule
+    AngularFirestoreModule,
+    SharedModule,
+    TrainingRoutingModule
   ],
   entryComponents: [StopTrainingModalComponent]
 })

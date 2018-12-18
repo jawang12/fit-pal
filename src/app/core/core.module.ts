@@ -1,19 +1,25 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { AppRoutingModule } from '../app-routing.module';
-import { FlexLayoutModule } from '@angular/flex-layout';
+import { SharedModule } from '../shared/shared.module';
 
 import { HomeComponent } from './home/home.component';
+import { HeaderComponent } from './navigation/header/header.component';
+import { SideNavListComponent } from './navigation/side-nav-list/side-nav-list.component';
 
 @NgModule({
-  declarations: [HomeComponent],
+  declarations: [
+    HomeComponent,
+    SideNavListComponent,
+    HeaderComponent
+    ],
   imports: [
-    CommonModule,
     AppRoutingModule,
-    FlexLayoutModule
+    SharedModule
   ],
   exports: [
-    AppRoutingModule
+    AppRoutingModule,
+    SideNavListComponent, // both need to be exported because we are using its selector in the app component
+    HeaderComponent
   ]
 })
 

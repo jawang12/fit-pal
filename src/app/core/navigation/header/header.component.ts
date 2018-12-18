@@ -2,7 +2,7 @@ import { Component, Output, EventEmitter, ViewChild, OnInit, OnDestroy } from '@
 import { MatIcon } from '@angular/material/icon';
 import { Subscription } from 'rxjs';
 
-import { AuthService } from '../../auth/auth.service';
+import { AuthService } from '../../../auth/auth.service';
 
 @Component({
   selector: 'app-header',

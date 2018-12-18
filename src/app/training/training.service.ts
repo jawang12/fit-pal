@@ -41,7 +41,9 @@ export class TrainingService {
       this.exercisesChanges.next(this.exercises.slice()); // pass a copy so that original array remains immutable
       this.uiService.loadingStateStatus.next(false);
     }, (error) => {
-      console.log(error, 'error fetching exercises');
+      this.uiService.loadingStateStatus.next(false);
+      this.exercisesChanges.next(null);
+      this.uiService.openSnackBar('there was an error retrieving all exercises', null, 5000);
     }));
   }
 
