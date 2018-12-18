@@ -1,3 +1,6 @@
+import { googleCreds } from '../../config.js';
+
 export const environment = {
-  production: true
+  production: true,
+  firebase: googleCreds
 };

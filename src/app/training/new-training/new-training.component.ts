@@ -18,8 +18,8 @@ export class NewTrainingComponent implements OnInit, OnDestroy {
   exercises: Exercise[];
 
   constructor(private router: Router,
-              protected trainingService: TrainingService,
-              protected uiService: UiService) { }
+              public trainingService: TrainingService,
+              public uiService: UiService) { }
 
   ngOnInit() {
     this.exercisesSub = this.trainingService.exercisesChanges.subscribe(updatedExercises => {

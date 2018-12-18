@@ -13,7 +13,7 @@ import { Verification } from '../verification.model';
 export class LoginComponent implements OnInit {
   reactiveLogin: FormGroup;
 
-  constructor(private fb: FormBuilder, private authService: AuthService, private uiService: UiService) {}
+  constructor(private fb: FormBuilder, private authService: AuthService, public uiService: UiService) {}
 
   ngOnInit() {
     this.initForm();

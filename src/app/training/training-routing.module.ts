@@ -13,7 +13,8 @@ const trainingRoutes: Routes = [
     children: [
       {
         path: 'new',
-        loadChildren: './new-training/lazy.module#NewTrainingLazyModule'
+        loadChildren: './new-training/lazy.module#NewTrainingLazyModule',
+        canLoad: [AuthGuard]
       },
       {
         path: 'current',
@@ -21,7 +22,8 @@ const trainingRoutes: Routes = [
       },
       {
         path: 'past',
-        loadChildren: './past-training/lazy.module#PastTrainingLazyModule'
+        loadChildren: './past-training/lazy.module#PastTrainingLazyModule',
+        canLoad: [AuthGuard]
       }
     ]
   }

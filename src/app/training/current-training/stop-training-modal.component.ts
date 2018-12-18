@@ -13,6 +13,6 @@ import { MAT_DIALOG_DATA } from '@angular/material';
 
 export class StopTrainingModalComponent {
 
-  constructor(@Inject(MAT_DIALOG_DATA) private progressData: { progress: number }) {}
+  constructor(@Inject(MAT_DIALOG_DATA) public progressData: { progress: number }) {}
 
 }
