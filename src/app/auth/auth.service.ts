@@ -10,14 +10,15 @@ import { TrainingService } from '../training/training.service';
 import { UiService } from '../shared/ui.service';
 import * as fromApp from '../store/app.reducer';
 import * as UI from '../store/ui/ui.actions';
+import * as Auth from '../store/auth/auth.actions';
 
 @Injectable({
   providedIn: 'root'
 })
 
 export class AuthService {
-  private isAuthenticated = false;
-  loginStatus: Subject<boolean> = new Subject<boolean>();
+  // private isAuthenticated = false;
+  // loginStatus: Subject<boolean> = new Subject<boolean>();
 
   constructor(private router: Router,
               private afAuth: AngularFireAuth,
@@ -31,14 +32,12 @@ export class AuthService {
       if (user) {
         this.afAuth.auth.setPersistence('session')
         .then(() => {
-          this.isAuthenticated = true;
-          this.loginStatus.next(true);
+          this.store.dispatch(new Auth.Login());
         })
         .catch(error => console.error(error));
       } else {
         this.trainingService.unsubAll();
-        this.isAuthenticated = false;
-        this.loginStatus.next(false);
+        this.store.dispatch(new Auth.Logout());
       }
     });
   }
@@ -83,9 +82,5 @@ export class AuthService {
       console.error(error, 'error on signout');
       this.uiService.openSnackBar(error.message, null, 5000);
     });
-  }
-
-  authStatus() {
-    return this.isAuthenticated;
   }
 }

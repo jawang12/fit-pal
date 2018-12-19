@@ -9,11 +9,11 @@
   </div>
   <div fxFlex fxLayout fxLayoutAlign="flex-end" fxHide.xs>
     <ul fxLayout fxLayoutGap="10px" class="nav-list">
-      <ng-template [ngIf]="!loggedIn">
+      <ng-template [ngIf]="!(loggedIn$ | async)">
         <li><a routerLink="/signup" routerLinkActive="active-link">Signup</a></li>
         <li><a routerLink="/login" routerLinkActive="active-link">Login</a></li>
       </ng-template>
-      <ng-template [ngIf]="loggedIn">
+      <ng-template [ngIf]="loggedIn$ | async">
         <li><a routerLink="/training" routerLinkActive="active-link">Training</a></li>
         <li><a (click)="logout()">Logout</a></li>
       </ng-template>

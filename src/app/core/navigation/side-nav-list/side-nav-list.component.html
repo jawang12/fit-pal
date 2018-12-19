@@ -1,5 +1,5 @@
 <mat-nav-list>
-  <ng-template [ngIf]="!loggedIn">
+  <ng-template [ngIf]="!(loggedIn$ | async)">
     <a routerLink="/signup"
        mat-list-item
        (click)="onClose()"
@@ -21,7 +21,7 @@
       <span class="nav-list-name">Login</span>
     </a>
   </ng-template>
-  <ng-template [ngIf]="loggedIn">
+  <ng-template [ngIf]="loggedIn$ | async">
     <a routerLink="/training"
        mat-list-item
        (click)="onClose()"
