@@ -1,32 +1,27 @@
-import { Component, Output, EventEmitter, ViewChild, OnInit, OnDestroy } from '@angular/core';
+import { Component, Output, EventEmitter, ViewChild, OnInit } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
-import { Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
+import { Store } from '@ngrx/store';
 
 import { AuthService } from '../../../auth/auth.service';
+import * as fromApp from '../../../store/app.reducer';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
-export class HeaderComponent implements OnInit, OnDestroy {
+export class HeaderComponent implements OnInit {
+
+  loggedIn$: Observable<boolean>;
+
   @ViewChild('menu') menu: MatIcon;
   @Output() toggleSidebar: EventEmitter<void> = new EventEmitter<void>();
 
-  loggedIn = false;
-  checkLoginStatus: Subscription;
-
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private store: Store<fromApp.AppState>) {}
 
   ngOnInit() {
-    this.checkLoginStatus = this.authService.loginStatus.subscribe((status: boolean) => {
-      this.loggedIn = status;
-    });
-    console.log(this.loggedIn, typeof this.loggedIn);
-  }
-
-  ngOnDestroy() {
-    this.checkLoginStatus.unsubscribe();
+    this.loggedIn$ = this.store.select(fromApp.getIsAuthenticated);
   }
 
   toggle() {

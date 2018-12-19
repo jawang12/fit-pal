@@ -2,24 +2,29 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { Router } from '@angular/router';
 import { AngularFireAuth } from '@angular/fire/auth';
+import { Store } from '@ngrx/store';
 
 import { User } from './user.model';
 import { Verification } from './verification.model';
 import { TrainingService } from '../training/training.service';
 import { UiService } from '../shared/ui.service';
+import * as fromApp from '../store/app.reducer';
+import * as UI from '../store/ui/ui.actions';
+import * as Auth from '../store/auth/auth.actions';
 
 @Injectable({
   providedIn: 'root'
 })
 
 export class AuthService {
-  private isAuthenticated = false;
-  loginStatus: Subject<boolean> = new Subject<boolean>();
+  // private isAuthenticated = false;
+  // loginStatus: Subject<boolean> = new Subject<boolean>();
 
   constructor(private router: Router,
               private afAuth: AngularFireAuth,
               private trainingService: TrainingService,
-              private uiService: UiService) {}
+              private uiService: UiService,
+              private store: Store<fromApp.AppState>) {}
 
   // listens to changes in the authentication status; emits event whenever the auth state changes
   authListener() {
@@ -27,44 +32,42 @@ export class AuthService {
       if (user) {
         this.afAuth.auth.setPersistence('session')
         .then(() => {
-          this.isAuthenticated = true;
-          this.loginStatus.next(true);
+          this.store.dispatch(new Auth.Login());
         })
         .catch(error => console.error(error));
       } else {
         this.trainingService.unsubAll();
-        this.isAuthenticated = false;
-        this.loginStatus.next(false);
+        this.store.dispatch(new Auth.Logout());
       }
     });
   }
 
   registerUser(creds: Verification) {
-    this.uiService.loadingStateStatus.next(true);
+    this.store.dispatch(new UI.StartLoading());
     this.afAuth.auth.createUserWithEmailAndPassword(creds.email, creds.password)
     .then(result => {
       console.log('user has been created', result);
-      this.uiService.loadingStateStatus.next(false);
+      this.store.dispatch(new UI.StopLoading());
       this.router.navigate(['/training']);
     })
     .catch((error: Error) => {
       console.error(error);
-      this.uiService.loadingStateStatus.next(false);
+      this.store.dispatch(new UI.StopLoading());
       this.uiService.openSnackBar(error.message, null, 5000);
     });
   }
 
   login(creds: Verification) {
-    this.uiService.loadingStateStatus.next(true);
+    this.store.dispatch(new UI.StartLoading());
     this.afAuth.auth.signInWithEmailAndPassword(creds.email, creds.password)
     .then(result => {
       console.log('user has successfully signed in', result);
-      this.uiService.loadingStateStatus.next(false);
+      this.store.dispatch(new UI.StopLoading());
       this.router.navigate(['/training']);
     })
     .catch((error: Error) => {
       console.error('error signing in', error);
-      this.uiService.loadingStateStatus.next(false);
+      this.store.dispatch(new UI.StopLoading());
       this.uiService.openSnackBar(error.message, null, 5000);
     });
   }
@@ -79,9 +82,5 @@ export class AuthService {
       console.error(error, 'error on signout');
       this.uiService.openSnackBar(error.message, null, 5000);
     });
-  }
-
-  authStatus() {
-    return this.isAuthenticated;
   }
 }

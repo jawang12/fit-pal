@@ -3,9 +3,12 @@ import { Router } from '@angular/router';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Subject, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { Store } from '@ngrx/store';
 
 import { UiService } from '../shared/ui.service';
 import { Exercise } from './exercise.model';
+import * as fromApp from '../store/app.reducer';
+import * as UI from '../store/ui/ui.actions';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +22,10 @@ export class TrainingService {
   recordedExercisesChanges = new Subject<Exercise[]>();
   activeSubs: Subscription[] = [];
 
-  constructor(private router: Router, private afs: AngularFirestore, private uiService: UiService) {}
+  constructor(private router: Router,
+              private afs: AngularFirestore,
+              private store: Store<fromApp.AppState>,
+              private uiService: UiService) {}
 
   startExercise(id: string) {
     this.exerciseInProgress = this.exercises.find(exercise => exercise.id === id);
@@ -27,7 +33,7 @@ export class TrainingService {
 
   fetchAllExercises() {
     // this subscription is managed automatically
-    this.uiService.loadingStateStatus.next(true);
+    this.store.dispatch(new UI.StartLoading());
     this.activeSubs.push(this.afs.collection('exercises').snapshotChanges()
     .pipe(map(docArray => {
       return docArray.map(obj => {
@@ -39,9 +45,9 @@ export class TrainingService {
     ).subscribe((pipedDocArray: Exercise[]) => {
       this.exercises = pipedDocArray;
       this.exercisesChanges.next(this.exercises.slice()); // pass a copy so that original array remains immutable
-      this.uiService.loadingStateStatus.next(false);
+      this.store.dispatch(new UI.StopLoading());
     }, (error) => {
-      this.uiService.loadingStateStatus.next(false);
+      this.store.dispatch(new UI.StopLoading());
       this.exercisesChanges.next(null);
       this.uiService.openSnackBar('there was an error retrieving all exercises', null, 5000);
     }));
