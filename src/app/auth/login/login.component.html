@@ -13,7 +13,7 @@
       <input type="password" matInput placeholder="Password" formControlName="password">
       <mat-error>Password is missing</mat-error>
     </mat-form-field>
-    <button *ngIf="!(uiService.loadingStateStatus | async); else spin" type="submit" mat-raised-button color="primary" [disabled]="reactiveLogin.invalid">Submit</button>
+    <button *ngIf="!(loading$ | async).isLoading; else spin" type="submit" mat-raised-button color="primary" [disabled]="reactiveLogin.invalid">Submit</button>
     <ng-template #spin>
       <mat-spinner [diameter]="40"></mat-spinner>
     </ng-template>

@@ -1,9 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { AuthService } from '../auth.service';
 import { UiService } from '../../shared/ui.service';
 import { Verification } from '../verification.model';
+import * as fromApp from '../../store/app.reducer';
+import * as fromUi from '../../store/ui/ui.reducer';
 
 @Component({
   selector: 'app-login',
@@ -12,11 +17,13 @@ import { Verification } from '../verification.model';
 })
 export class LoginComponent implements OnInit {
   reactiveLogin: FormGroup;
+  loading$: Observable<fromUi.UiState>;
 
-  constructor(private fb: FormBuilder, private authService: AuthService, public uiService: UiService) {}
+  constructor(private fb: FormBuilder, private authService: AuthService, private store: Store<fromApp.AppState>) {}
 
   ngOnInit() {
     this.initForm();
+    this.loading$ = this.store.select('ui');
   }
 
   private initForm() {

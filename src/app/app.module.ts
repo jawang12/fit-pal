@@ -7,9 +7,12 @@ import { FlexLayoutModule} from '@angular/flex-layout';
 import { TrainingModule } from './training/training.module';
 import { AngularFireModule } from '@angular/fire';
 import { AuthModule } from './auth/auth.module';
+import { StoreModule } from '@ngrx/store';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 import { AppComponent } from './app.component';
 import { environment } from '../environments/environment';
+import { combinedReducers } from './store/app.reducer';
 
 @NgModule({
   declarations: [
@@ -20,9 +23,11 @@ import { environment } from '../environments/environment';
     AngularFireModule.initializeApp(environment.firebase),
     BrowserAnimationsModule,
     FlexLayoutModule,
+    StoreModule.forRoot(combinedReducers),
     MaterialModule,
     TrainingModule,
     AuthModule,
+    !environment.production ? StoreDevtoolsModule.instrument() : [],
     CoreModule
   ],
   providers: [],

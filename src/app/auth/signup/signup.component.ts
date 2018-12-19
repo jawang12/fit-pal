@@ -1,40 +1,32 @@
-import { Component, ViewChild, OnInit, OnDestroy } from '@angular/core';
+import { Component, ViewChild, OnInit } from '@angular/core';
 import { NgForm, NgControl } from '@angular/forms';
-import { Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
+import { Store } from '@ngrx/store';
 
 import { AuthService } from '../auth.service';
-import { UiService } from '../../shared/ui.service';
 import { Verification } from '../verification.model';
+import * as fromApp from '../../store/app.reducer';
 
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.css']
 })
-export class SignupComponent implements OnInit, OnDestroy {
+export class SignupComponent implements OnInit {
 
   @ViewChild('signupForm') signupForm: NgForm;
   @ViewChild('emailInput') email: NgControl;
 
   maxDate: Date;
-  isLoading = false;
-  loadingSub: Subscription;
+  isLoading$: Observable<boolean>;
 
-  constructor(private authService: AuthService, private uiService: UiService) {}
+  constructor(private authService: AuthService, private store: Store<fromApp.AppState>) {}
 
   ngOnInit() {
     this.maxDate = new Date();
     this.maxDate.setFullYear(this.maxDate.getFullYear() - 18);
 
-    this.loadingSub = this.uiService.loadingStateStatus.subscribe(loadingStatus => {
-      this.isLoading = loadingStatus;
-    });
-  }
-
-  ngOnDestroy() {
-    if (this.loadingSub) {
-      this.loadingSub.unsubscribe(); // prevents weird bug in case onDestroy is called before the sub is created
-    }
+    this.isLoading$ = this.store.select(fromApp.getIsLoading);
   }
 
   onSubmit() {
