@@ -42,8 +42,14 @@
       <mat-datepicker-toggle [for]="picker" matSuffix></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>
-    <mat-checkbox required ngModel name="terms" color="primary">Agree to Terms and Conditions.</mat-checkbox>
-    <button *ngIf="!(isLoading$ | async)" type="submit" mat-raised-button color="primary" [disabled]="!signupForm.valid">Submit</button>
+    <mat-checkbox required ngModel name="terms" color="accent">Agree to Terms and Conditions.</mat-checkbox>
+    <button
+        *ngIf="!(isLoading$ | async)"
+        type="submit"
+        mat-raised-button
+        color="accent"
+        class="white-text"
+        [disabled]="!signupForm.valid">Submit</button>
     <mat-spinner [diameter]="40" *ngIf="isLoading$ | async"></mat-spinner>
   </form>
 </section>
