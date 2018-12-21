@@ -3,9 +3,11 @@ import { MatTableDataSource } from '@angular/material';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { Subscription } from 'rxjs';
+import { Store } from '@ngrx/store';
 
 import { Exercise } from '../exercise.model';
 import { TrainingService } from '../training.service';
+import * as fromApp from '../../store/app.reducer';
 
 @Component({
   selector: 'app-past-training',
@@ -21,10 +23,11 @@ export class PastTrainingComponent implements OnInit, AfterViewInit, OnDestroy {
   totalExercises: number;
   recordedExercisesSubscription: Subscription;
 
-  constructor(private trainingService: TrainingService) {}
+
+  constructor(private trainingService: TrainingService, private store: Store<fromApp.AppState>) {}
 
   ngOnInit() {
-    this.recordedExercisesSubscription = this.trainingService.recordedExercisesChanges.subscribe((recordedExercises: Exercise[]) => {
+    this.recordedExercisesSubscription = this.store.select(fromApp.getRecordedExercises).subscribe((recordedExercises: Exercise[]) => {
       this.dataSource.data = recordedExercises;
       this.totalExercises = recordedExercises.length;
     });
@@ -45,7 +48,6 @@ export class PastTrainingComponent implements OnInit, AfterViewInit, OnDestroy {
   onFilter(value: string) {
     this.dataSource.filter = value.trim().toLowerCase();
   }
-
 }
 
 /* viewchild is fetching from template and template isnt finished rendering during oninit

@@ -1,24 +1,24 @@
 <section class="new-training" fxLayout fxLayoutAlign="center">
   <mat-card fxFlex.lt-sm="100%" fxFlex="400px">
     <mat-card-title fxLayoutAlign="center">Lets Workout!</mat-card-title>
-    <ng-template [ngIf]="!(loading$ | async) && exercises">
+    <ng-template [ngIf]="!(loading$ | async) && exercises$ | async">
       <mat-card-content>
         <mat-form-field fxLayoutAlign="center">
           <mat-select placeholder="Select a workout" #selected>
-            <mat-option *ngFor="let exercise of exercises" [value]="exercise">
+            <mat-option *ngFor="let exercise of exercises$ | async" [value]="exercise">
               {{ exercise.name }}
             </mat-option>
           </mat-select>
         </mat-form-field>
       </mat-card-content>
       <mat-card-actions fxLayoutAlign="center">
-        <button type="submit" mat-raised-button (click)="startTraining(selected)" [disabled]="!selected.value">
+        <button type="submit" class="white-text" mat-raised-button color="accent" (click)="startTraining(selected)" [disabled]="!selected.value">
           Start
         </button>
       </mat-card-actions>
     </ng-template>
-    <mat-card-actions *ngIf="!(loading$ | async) && !exercises" fxLayoutAlign="center">
-      <button type="button" mat-raised-button (click)="trainingService.fetchAllExercises()">
+    <mat-card-actions *ngIf="!(loading$ | async) && !(exercises$ | async)" fxLayoutAlign="center">
+      <button type="button" mat-raised-button color="accent" (click)="trainingService.fetchAllExercises()">
         Fetch Again
       </button>
     </mat-card-actions>

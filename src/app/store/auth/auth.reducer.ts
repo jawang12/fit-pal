@@ -8,7 +8,7 @@ const initialState: AuthState = {
   isAuthenticated: false
 };
 
-export function AuthReducer(state = initialState, action: Auth.AuthActions) {
+export function AuthReducer(state = initialState, action: Auth.AuthActions): AuthState {
   switch (action.type) {
     case Auth.AuthActionTypes.LOGIN:
       return {

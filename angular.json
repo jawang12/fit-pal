@@ -23,7 +23,8 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css"
+              "src/styles.css",
+              "src/custom-themes.scss"
             ],
             "scripts": []
           },
@@ -123,5 +124,8 @@
       }
     }
   },
-  "defaultProject": "fit-pal"
+  "defaultProject": "fit-pal",
+  "cli": {
+    "defaultCollection": "@ngrx/schematics"
+  }
 }
