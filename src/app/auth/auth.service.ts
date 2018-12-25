@@ -59,17 +59,18 @@ export class AuthService {
 
   login(creds: Verification) {
     this.store.dispatch(new UI.StartLoading());
-    this.afAuth.auth.signInWithEmailAndPassword(creds.email, creds.password)
-    .then(result => {
-      console.log('user has successfully signed in', result);
-      this.store.dispatch(new UI.StopLoading());
-      this.router.navigate(['/training']);
-    })
-    .catch((error: Error) => {
-      console.error('error signing in', error);
-      this.store.dispatch(new UI.StopLoading());
-      this.uiService.openSnackBar(error.message, null, 5000);
-    });
+    this.store.dispatch(new Auth.LoginAttempt(creds.email, creds.password));
+    // this.afAuth.auth.signInWithEmailAndPassword(creds.email, creds.password)
+    // .then(result => {
+    //   console.log('user has successfully signed in', result);
+    //   this.store.dispatch(new UI.StopLoading());
+    //   this.router.navigate(['/training']);
+    // })
+    // .catch((error: Error) => {
+    //   console.error('error signing in', error);
+    //   this.store.dispatch(new UI.StopLoading());
+    //   this.uiService.openSnackBar(error.message, null, 5000);
+    // });
   }
 
   logout() {

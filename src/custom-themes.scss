@@ -12,9 +12,13 @@ $custom-font: mat-typography-config(
 
 
 // Define your application's custom theme.
-$primary: mat-palette($md-blue-grey);
+$primary: mat-palette($md-serenity);
 $accent:  mat-palette($md-coral, A200, A100, A400);
 $theme: mat-light-theme($primary, $accent);
 
 // Include theme styles for Angular Material components.
 @include angular-material-theme($theme);
+
+.overlay-theme {
+  @include angular-material-theme($theme);
+}

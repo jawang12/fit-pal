@@ -9,10 +9,12 @@ import { AngularFireModule } from '@angular/fire';
 import { AuthModule } from './auth/auth.module';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { EffectsModule } from '@ngrx/effects';
 
 import { AppComponent } from './app.component';
 import { environment } from '../environments/environment';
 import { combinedReducers } from './store/app.reducer';
+import { AuthEffects } from './store/auth/auth.effects';
 
 @NgModule({
   declarations: [
@@ -28,6 +30,7 @@ import { combinedReducers } from './store/app.reducer';
     TrainingModule,
     AuthModule,
     !environment.production ? StoreDevtoolsModule.instrument() : [],
+    EffectsModule.forRoot([AuthEffects]),
     CoreModule
   ],
   providers: [],
