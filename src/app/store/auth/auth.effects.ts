@@ -40,6 +40,24 @@ export class AuthEffects {
     }));
   }));
 
+  @Effect()
+  signupAttempt = this.actions$
+  .ofType(Auth.AuthActionTypes.SIGN_UP)
+  .pipe(switchMap((actionPayload: Auth.SignUp) => {
+    const email = actionPayload.email;
+    const password = actionPayload.password;
+    return from(this.afa.auth.createUserWithEmailAndPassword(email, password))
+    .pipe(map((result) => {
+      console.log('user has been created', result);
+      this.store.dispatch(new UI.StopLoading());
+      this.router.navigate(['/training']);
+      return new Auth.Login();
+    }),
+    catchError(() => {
+      return of(new Auth.SignUpFail());
+    }));
+  }));
+
   // react to this action but don't send another
   @Effect({ dispatch: false })
   loginAttemptFail = this.actions$
@@ -47,5 +65,22 @@ export class AuthEffects {
   .pipe(tap(() => {
     this.store.dispatch(new UI.StopLoading());
     this.uiService.openSnackBar('invalid login credentials', null, 5000);
+  }));
+
+  @Effect({ dispatch: false })
+  signupFail = this.actions$
+  .ofType(Auth.AuthActionTypes.SIGN_UP_FAIL)
+  .pipe(tap(() => {
+    this.store.dispatch(new UI.StopLoading());
+    this.uiService.openSnackBar('there was a problem registering the account', null, 5000);
+  }));
+
+  @Effect({ dispatch: false })
+  logout = this.actions$
+  .ofType(Auth.AuthActionTypes.LOGOUT)
+  .pipe(tap(() => {
+    this.afa.auth.signOut();
+    console.log('signed out');
+    this.router.navigate(['/']);
   }));
 }

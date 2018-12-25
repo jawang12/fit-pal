@@ -37,13 +37,15 @@ export class AuthService {
         .catch(error => console.error(error));
       } else {
         this.trainingService.unsubAll();
-        this.store.dispatch(new Auth.Logout());
+        console.log('hit');
       }
     });
   }
 
   registerUser(creds: Verification) {
     this.store.dispatch(new UI.StartLoading());
+    this.store.dispatch(new Auth.SignUp(creds.email, creds.password));
+    /*
     this.afAuth.auth.createUserWithEmailAndPassword(creds.email, creds.password)
     .then(result => {
       console.log('user has been created', result);
@@ -55,33 +57,28 @@ export class AuthService {
       this.store.dispatch(new UI.StopLoading());
       this.uiService.openSnackBar(error.message, null, 5000);
     });
+    */
   }
 
   login(creds: Verification) {
     this.store.dispatch(new UI.StartLoading());
     this.store.dispatch(new Auth.LoginAttempt(creds.email, creds.password));
-    // this.afAuth.auth.signInWithEmailAndPassword(creds.email, creds.password)
-    // .then(result => {
-    //   console.log('user has successfully signed in', result);
-    //   this.store.dispatch(new UI.StopLoading());
-    //   this.router.navigate(['/training']);
-    // })
-    // .catch((error: Error) => {
-    //   console.error('error signing in', error);
-    //   this.store.dispatch(new UI.StopLoading());
-    //   this.uiService.openSnackBar(error.message, null, 5000);
-    // });
+    /*
+    this.afAuth.auth.signInWithEmailAndPassword(creds.email, creds.password)
+    .then(result => {
+      console.log('user has successfully signed in', result);
+      this.store.dispatch(new UI.StopLoading());
+      this.router.navigate(['/training']);
+    })
+    .catch((error: Error) => {
+      console.error('error signing in', error);
+      this.store.dispatch(new UI.StopLoading());
+      this.uiService.openSnackBar(error.message, null, 5000);
+    });
+    */
   }
 
   logout() {
-    this.afAuth.auth.signOut()
-    .then(result => {
-      console.log('signed out', result);
-      this.router.navigate(['/']);
-    })
-    .catch((error: Error) => {
-      console.error(error, 'error on signout');
-      this.uiService.openSnackBar(error.message, null, 5000);
-    });
+    this.store.dispatch(new Auth.Logout());
   }
 }
