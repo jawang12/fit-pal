@@ -4,7 +4,8 @@
     fxLayoutAlign="center center"
     #signupForm="ngForm"
     (ngSubmit)="onSubmit()"
-    fxLayoutGap="10px">
+    fxLayoutGap="10px"
+  >
     <mat-form-field>
       <input
         name="email"
@@ -13,8 +14,9 @@
         email
         ngModel
         #emailInput="ngModel"
-        required>
-        <mat-error *ngIf="emailInput.invalid">{{ errorMessage() }}</mat-error>
+        required
+      />
+      <mat-error *ngIf="emailInput.invalid">{{ errorMessage() }}</mat-error>
     </mat-form-field>
     <mat-form-field>
       <input
@@ -25,10 +27,12 @@
         ngModel
         required
         minlength="6"
-        #passwordInput="ngModel">
-        <mat-hint align="start" *ngIf="passwordInput.value?.length < 6">
-        Note: Password must be at least 6 characters</mat-hint>
-        <mat-hint align="end">{{ passwordInput.value?.length || 0 }}/6</mat-hint>
+        #passwordInput="ngModel"
+      />
+      <mat-hint align="start" *ngIf="passwordInput.value?.length < 6">
+        Note: Password must be at least 6 characters</mat-hint
+      >
+      <mat-hint align="end">{{ passwordInput.value?.length || 0 }}/6</mat-hint>
     </mat-form-field>
     <mat-form-field>
       <input
@@ -38,18 +42,27 @@
         required
         name="dob"
         [matDatepicker]="picker"
-        [max]="maxDate">
+        [max]="maxDate"
+      />
       <mat-datepicker-toggle [for]="picker" matSuffix></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>
-    <mat-checkbox required ngModel name="terms" color="accent">Agree to Terms and Conditions.</mat-checkbox>
+    <mat-checkbox required ngModel name="terms" color="accent"
+      >Agree to Terms and Conditions.</mat-checkbox
+    >
     <button
-        *ngIf="!(isLoading$ | async)"
-        type="submit"
-        mat-raised-button
-        color="accent"
-        class="white-text"
-        [disabled]="!signupForm.valid">Submit</button>
-    <mat-spinner [diameter]="40" *ngIf="isLoading$ | async"></mat-spinner>
+      *ngIf="!(isLoading$ | async); else show"
+      type="submit"
+      mat-raised-button
+      appButtonExt
+      [form]="signupForm"
+      class="white-text"
+      color="accent"
+    >
+      Submit
+    </button>
+    <ng-template #show>
+      <mat-spinner [diameter]="40"></mat-spinner>
+    </ng-template>
   </form>
 </section>

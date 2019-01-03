@@ -5,7 +5,9 @@ export enum TrainingActionTypes {
   SET_AVAILABLE_EXERCISES = '[Training] Set Available Exercises',
   SET_RECORDED_EXERCISES = '[Training] Set Recorded Exercises',
   START_EXERCISE = '[Training] Start Exercise',
-  FINISH_EXERCISE = '[Training] Finish Exercise'
+  FINISH_EXERCISE = '[Training] Finish Exercise',
+  FETCH_ALL_EXERCISES = '[Training] Fetch All Exercises',
+  FAILED_FETCHING_EXERCISES = '[Training] Failed Fetching Exercises'
 }
 
 export class SetAvailableExercises implements Action {
@@ -27,8 +29,17 @@ export class FinishExercise implements Action {
   readonly type = TrainingActionTypes.FINISH_EXERCISE;
 }
 
+export class FetchAllExercises implements Action {
+  readonly type = TrainingActionTypes.FETCH_ALL_EXERCISES;
+  constructor(public allExercises: Exercise[]) {}
+}
+
+export class FailedFetchingExercises implements Action {
+  readonly type = TrainingActionTypes.FAILED_FETCHING_EXERCISES;
+}
+
 export type TrainingActions =
-SetAvailableExercises |
-SetRecordedExercises |
-StartExercise |
-FinishExercise;
+  | SetAvailableExercises
+  | SetRecordedExercises
+  | StartExercise
+  | FinishExercise;

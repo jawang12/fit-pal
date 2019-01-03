@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { Subject, Subscription } from 'rxjs';
-import { map, take } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
+import { take, tap } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
 import { UiService } from '../shared/ui.service';
@@ -32,21 +32,15 @@ export class TrainingService {
     // this subscription is managed automatically
     this.store.dispatch(new UI.StartLoading());
     this.activeSubs.push(this.afs.collection('exercises').snapshotChanges()
-    .pipe(map(docArray => {
-      return docArray.map(obj => {
+    .pipe(tap(docArray => {
+      const pipedDocArray: Exercise[] = docArray.map(obj => {
         const id = obj.payload.doc.id;
         const exerciseDetail = obj.payload.doc.data();
         return new Exercise(id, exerciseDetail['name'], exerciseDetail['duration'], exerciseDetail['calories']);
       });
-    })
-    ).subscribe((pipedDocArray: Exercise[]) => {
-      this.store.dispatch(new Training.SetAvailableExercises(pipedDocArray));
-      this.store.dispatch(new UI.StopLoading());
-    }, error => {
-      this.store.dispatch(new UI.StopLoading());
-      this.store.dispatch(new Training.SetAvailableExercises(null));
-      this.uiService.openSnackBar('there was an error retrieving all exercises', null, 5000);
-    }));
+      this.store.dispatch(new Training.FetchAllExercises(pipedDocArray));
+    }))
+    .subscribe());
   }
 
   fetchRecordedExercises() {

@@ -6,11 +6,13 @@ import { SharedModule } from '../shared/shared.module';
 import { SignupComponent } from './signup/signup.component';
 import { LoginComponent } from './login/login.component';
 import { AuthRoutingModule } from './auth-routing.module';
+import { ButtonExtDirective } from './signup/button-ext.directive';
 
 @NgModule({
   declarations: [
     SignupComponent,
-    LoginComponent
+    LoginComponent,
+    ButtonExtDirective
   ],
   imports: [
     AngularFireAuthModule,
