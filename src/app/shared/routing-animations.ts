@@ -15,7 +15,8 @@ export const routerSlideInStateTrigger = trigger('routerSlideInState', [
         style({
           position: 'fixed',
           width: '100%',
-          height: '100%'
+          height: '100%',
+          backgroundColor: '#fafafa'
         })
       ],
       { optional: true }
@@ -29,7 +30,7 @@ export const routerSlideInStateTrigger = trigger('routerSlideInState', [
           }),
 
           animate(
-            '500ms ease-in-out',
+            '600ms ease-in-out',
             style({
               transform: 'translateX(0%)'
             })
@@ -44,7 +45,7 @@ export const routerSlideInStateTrigger = trigger('routerSlideInState', [
             transform: 'translateX(0%)'
           }),
           animate(
-            '500ms ease-in-out',
+            '600ms ease-in-out',
             style({
               transform: 'translateX(-100%)'
             })
