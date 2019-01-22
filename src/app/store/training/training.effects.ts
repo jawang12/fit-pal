@@ -29,6 +29,18 @@ export class TrainingEffects {
     })
   );
 
+  @Effect()
+  fetchRecordedExercises = this.actions$.pipe(
+    ofType(Training.TrainingActionTypes.FETCH_RECORDED_EXERCISES),
+    switchMap((actionPayload: Training.FetchRecordedExercises) => {
+      const recordedExercises = actionPayload.recordedExercises;
+      return [new Training.SetRecordedExercises(recordedExercises)];
+    }),
+    catchError(() => {
+      return of(new Training.FailedFetchingExercises());
+    })
+  );
+
   @Effect({ dispatch: false })
   failedToGetExercises = this.actions$.pipe(
     ofType(Training.TrainingActionTypes.FAILED_FETCHING_EXERCISES),

@@ -6,7 +6,6 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   providedIn: 'root'
 })
 export class UiService {
-
   loadingStateStatus: BehaviorSubject<boolean> = new BehaviorSubject(false);
   // loadingStateStatus = new Subject<boolean>();
 
@@ -17,5 +16,4 @@ export class UiService {
       duration
     });
   }
-
 }

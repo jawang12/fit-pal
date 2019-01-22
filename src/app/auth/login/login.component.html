@@ -4,20 +4,31 @@
     fxLayoutAlign="center center"
     fxLayoutGap="10px"
     [formGroup]="reactiveLogin"
-    (ngSubmit)="onSubmit()">
+    (ngSubmit)="onSubmit()"
+  >
     <mat-form-field>
-      <input matInput placeholder="Email Address" formControlName="email">
-      <mat-error *ngIf="reactiveLogin.controls.email.invalid">{{ errorMessage() }}</mat-error>
+      <input matInput placeholder="Email Address" formControlName="email" />
+      <mat-error *ngIf="isValidEmail()">{{ errorMessage() }}</mat-error>
     </mat-form-field>
     <mat-form-field>
-      <input type="password" matInput placeholder="Password" formControlName="password">
+      <input
+        type="password"
+        matInput
+        placeholder="Password"
+        formControlName="password"
+      />
       <mat-error>Password is missing</mat-error>
     </mat-form-field>
     <button
       *ngIf="!(loading$ | async).isLoading; else spin"
       class="white-text"
-      type="submit" mat-raised-button color="accent"
-      [disabled]="reactiveLogin.invalid">Submit</button>
+      type="submit"
+      mat-raised-button
+      color="accent"
+      [disabled]="reactiveLogin.invalid"
+    >
+      Submit
+    </button>
     <ng-template #spin>
       <mat-spinner [diameter]="40"></mat-spinner>
     </ng-template>

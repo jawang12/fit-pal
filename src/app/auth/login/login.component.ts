@@ -43,6 +43,10 @@ export class LoginComponent implements OnInit {
       : '';
   }
 
+  isValidEmail() {
+    return this.reactiveLogin.get('email').invalid;
+  }
+
   onSubmit() {
     const { email, password } = this.reactiveLogin.value;
     this.authService.login(new Verification(email, password));

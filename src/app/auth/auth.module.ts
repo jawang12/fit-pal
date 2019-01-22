@@ -9,11 +9,7 @@ import { AuthRoutingModule } from './auth-routing.module';
 import { ButtonExtDirective } from './signup/button-ext.directive';
 
 @NgModule({
-  declarations: [
-    SignupComponent,
-    LoginComponent,
-    ButtonExtDirective
-  ],
+  declarations: [SignupComponent, LoginComponent, ButtonExtDirective],
   imports: [
     AngularFireAuthModule,
     ReactiveFormsModule,
@@ -22,5 +18,4 @@ import { ButtonExtDirective } from './signup/button-ext.directive';
     AuthRoutingModule
   ]
 })
-
 export class AuthModule {}

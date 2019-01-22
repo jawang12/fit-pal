@@ -3,10 +3,8 @@
     <app-side-nav-list (clickClose)="sidenav.close()"></app-side-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
-    <header>
-      <app-header (toggleSidebar)="toggle()"></app-header>
-    </header>
-    <main style="height: 100%; margin-top: 65px">
+    <header><app-header (toggleSidebar)="toggle()"></app-header></header>
+    <main style="height: 100%;" [style.marginTop.px]="64">
       <router-outlet></router-outlet>
     </main>
   </mat-sidenav-content>

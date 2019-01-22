@@ -7,15 +7,13 @@ import { NewTrainingComponent } from './new-training.component';
 const newTrainingRoute: Routes = [
   {
     path: '',
-    component: NewTrainingComponent
+    component: NewTrainingComponent,
+    data: { animation: 'new' }
   }
 ];
 
 @NgModule({
-  declarations: [ NewTrainingComponent ],
-  imports: [
-    RouterModule.forChild(newTrainingRoute),
-    SharedModule
-  ]
+  declarations: [NewTrainingComponent],
+  imports: [RouterModule.forChild(newTrainingRoute), SharedModule]
 })
-export class NewTrainingLazyModule { }
+export class NewTrainingLazyModule {}

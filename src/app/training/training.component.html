@@ -1,15 +1,22 @@
 <nav mat-tab-nav-bar color="accent" *ngIf="!trainingInProgress()">
-  <a mat-tab-link
+  <a
+    mat-tab-link
     routerLink="/training/new"
     routerLinkActive
     #active2="routerLinkActive"
-    [active]="active2.isActive">New Exercises</a>
-  <a mat-tab-link
+    [active]="active2.isActive"
+    >New Exercises</a
+  >
+  <a
+    mat-tab-link
     [routerLink]="['/training/past']"
     routerLinkActive
     #active1="routerLinkActive"
-    [active]="active1.isActive">Past Exercises</a>
+    [active]="active1.isActive"
+    >Past Exercises</a
+  >
 </nav>
 
-<router-outlet></router-outlet>
-
+<div style="height: 100%" [@routerSlideInState]="onRouteSlide(rOutlet)">
+  <router-outlet #rOutlet="outlet"></router-outlet>
+</div>

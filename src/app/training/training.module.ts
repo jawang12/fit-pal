@@ -23,7 +23,4 @@ import { TrainingEffects } from '../store/training/training.effects';
   ],
   entryComponents: [StopTrainingModalComponent]
 })
-
-export class TrainingModule {
-
-}
+export class TrainingModule {}

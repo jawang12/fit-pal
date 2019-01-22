@@ -4,16 +4,7 @@ import { MaterialModule } from '../material.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    MaterialModule,
-    FlexLayoutModule
-  ],
-  exports: [
-    CommonModule,
-    FlexLayoutModule,
-    MaterialModule
-  ]
+  imports: [CommonModule, MaterialModule, FlexLayoutModule],
+  exports: [CommonModule, FlexLayoutModule, MaterialModule]
 })
-
 export class SharedModule {}

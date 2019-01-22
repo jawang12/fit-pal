@@ -7,16 +7,13 @@ import { PastTrainingComponent } from './past-training.component';
 const pastTrainingRoutes: Routes = [
   {
     path: '',
-    component: PastTrainingComponent
+    component: PastTrainingComponent,
+    data: { animation: 'past' }
   }
 ];
 
 @NgModule({
-  declarations: [ PastTrainingComponent ],
-  imports: [
-    SharedModule,
-    RouterModule.forChild(pastTrainingRoutes)
-  ]
+  declarations: [PastTrainingComponent],
+  imports: [SharedModule, RouterModule.forChild(pastTrainingRoutes)]
 })
-
-export class PastTrainingLazyModule { }
+export class PastTrainingLazyModule {}

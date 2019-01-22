@@ -1,36 +1,57 @@
-<div style="justify-content: center; padding: 20px 0" >
-  <mat-form-field fxFlex="30%" fxFlex.sm="50%" fxFlex.xs="80%" appearance="outline">
-    <mat-label>Find a previous workout</mat-label>
-    <input type="text" matInput (keyup)="onFilter($event.target.value)">
-    <mat-icon matSuffix>search</mat-icon>
-  </mat-form-field>
+<div *ngIf="dataSource?.filteredData.length">
+  <div style="justify-content: center; padding: 20px 0">
+    <mat-form-field
+      fxFlex="30%"
+      fxFlex.sm="50%"
+      fxFlex.xs="80%"
+      appearance="outline"
+    >
+      <mat-label>Find a previous workout</mat-label>
+      <input type="text" matInput (keyup)="onFilter($event.target.value)" />
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+  </div>
+  <mat-table [dataSource]="dataSource" matSort>
+    <ng-container matColumnDef="date">
+      <mat-header-cell mat-sort-header *matHeaderCellDef>Date</mat-header-cell>
+      <mat-cell *matCellDef="let element">{{
+        element.date.toDate() | date
+      }}</mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="name">
+      <mat-header-cell mat-sort-header *matHeaderCellDef>Name</mat-header-cell>
+      <mat-cell *matCellDef="let element">{{ element.name }}</mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="state">
+      <mat-header-cell *matHeaderCellDef>State</mat-header-cell>
+      <mat-cell *matCellDef="let element">{{ element.state }}</mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="calories">
+      <mat-header-cell mat-sort-header *matHeaderCellDef
+        >Calories</mat-header-cell
+      >
+      <mat-cell *matCellDef="let element">{{ element.calories }}</mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="duration">
+      <mat-header-cell mat-sort-header *matHeaderCellDef
+        >Duration</mat-header-cell
+      >
+      <mat-cell *matCellDef="let element">{{ element.duration }}</mat-cell>
+    </ng-container>
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+  </mat-table>
+  <mat-paginator
+    [length]="totalExercises"
+    [pageSize]="5"
+    [pageSizeOptions]="[1, 5, 10]"
+  >
+  </mat-paginator>
 </div>
-<mat-table [dataSource]="dataSource" matSort>
-  <ng-container matColumnDef="date">
-    <mat-header-cell mat-sort-header *matHeaderCellDef>Date</mat-header-cell>
-    <mat-cell *matCellDef="let element">{{ element.date.toDate() | date }}</mat-cell>
-  </ng-container>
-  <ng-container matColumnDef="name">
-    <mat-header-cell mat-sort-header *matHeaderCellDef>Name</mat-header-cell>
-    <mat-cell *matCellDef="let element">{{ element.name }}</mat-cell>
-  </ng-container>
-  <ng-container matColumnDef="state">
-    <mat-header-cell *matHeaderCellDef>State</mat-header-cell>
-    <mat-cell *matCellDef="let element">{{ element.state }}</mat-cell>
-  </ng-container>
-  <ng-container matColumnDef="calories">
-    <mat-header-cell mat-sort-header *matHeaderCellDef>Calories</mat-header-cell>
-    <mat-cell *matCellDef="let element">{{ element.calories }}</mat-cell>
-  </ng-container>
-  <ng-container matColumnDef="duration">
-    <mat-header-cell mat-sort-header *matHeaderCellDef>Duration</mat-header-cell>
-    <mat-cell *matCellDef="let element">{{ element.duration }}</mat-cell>
-  </ng-container>
-  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-  <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
-</mat-table>
-<mat-paginator
-  [length]="totalExercises"
-  [pageSize]="5"
-  [pageSizeOptions]="[1, 5, 10]">
-</mat-paginator>
+<div
+  *ngIf="!dataSource?.filteredData.length"
+  fxLayoutAlign="center center"
+  style="height: 100%"
+>
+  <mat-spinner color="accent" [diameter]="80"></mat-spinner>
+</div>

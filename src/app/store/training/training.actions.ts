@@ -7,7 +7,8 @@ export enum TrainingActionTypes {
   START_EXERCISE = '[Training] Start Exercise',
   FINISH_EXERCISE = '[Training] Finish Exercise',
   FETCH_ALL_EXERCISES = '[Training] Fetch All Exercises',
-  FAILED_FETCHING_EXERCISES = '[Training] Failed Fetching Exercises'
+  FAILED_FETCHING_EXERCISES = '[Training] Failed Fetching Exercises',
+  FETCH_RECORDED_EXERCISES = '[Training] Fetch Recorded Exercises'
 }
 
 export class SetAvailableExercises implements Action {
@@ -27,6 +28,11 @@ export class StartExercise implements Action {
 
 export class FinishExercise implements Action {
   readonly type = TrainingActionTypes.FINISH_EXERCISE;
+}
+
+export class FetchRecordedExercises implements Action {
+  readonly type = TrainingActionTypes.FETCH_RECORDED_EXERCISES;
+  constructor(public recordedExercises: Exercise[]) {}
 }
 
 export class FetchAllExercises implements Action {

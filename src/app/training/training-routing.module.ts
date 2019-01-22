@@ -34,7 +34,4 @@ const trainingRoutes: Routes = [
   exports: [RouterModule],
   providers: [AuthGuard]
 })
-
-export class TrainingRoutingModule {
-
-}
+export class TrainingRoutingModule {}
